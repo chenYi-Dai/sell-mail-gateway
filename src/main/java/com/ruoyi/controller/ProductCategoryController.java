@@ -6,6 +6,7 @@ import com.ruoyi.form.ProductCategoryListParam;
 import com.ruoyi.form.ProductCategoryParam;
 import com.ruoyi.form.UpdateProductCategoryParam;
 import com.ruoyi.service.ProductCategoryService;
+import com.ruoyi.util.RedisUtils;
 import com.ruoyi.vo.PageResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +28,8 @@ import javax.annotation.Resource;
 public class ProductCategoryController {
 
     @Resource
+    private RedisUtils redisUtils;
+    @Resource
     private ProductCategoryService categoryService;
 
     @ApiOperation(value = "获取品类列表信息",notes = "productCategoryList")
@@ -35,7 +38,8 @@ public class ProductCategoryController {
         log.info("ProductCategoryController productCategoryList param | {}",param);
         ServletRequestAttributes requestAttributes =(ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         String requestId =(String) requestAttributes.getRequest().getAttribute("requestId");
-        log.info("productCategoryList requestId | {}",requestId);
+        String requestUid = (String) redisUtils.get(requestId);
+        log.info("productCategoryList requestId | {}",requestUid);
         PageResult<ProductCategoryDto> pageResult = categoryService.productCategoryList(param);
         return pageResult;
     }

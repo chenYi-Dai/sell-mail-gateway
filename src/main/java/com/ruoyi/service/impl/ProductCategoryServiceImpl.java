@@ -57,6 +57,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService, Initi
             return pageResult;
         }
 
+
         List<ProductCategoryDto> dtos = categoryDao.productCategoryList(param);
         pageResult.setData(dtos);
         pageResult.setTotal(count);

@@ -46,7 +46,7 @@ public class LogAspect {
            String requestUidKey = "thredRequestId_" + System.currentTimeMillis();
            log.info("redis key  | {}",requestUidKey);
            redisUtils.set(requestUidKey,randomStr, NumberUtils.LONG_ONE);
-           request.setAttribute("requestId",randomStr);
+           request.setAttribute("requestId",requestUidKey);
            String remoteHost = request.getRemoteHost();
            String remoteUser = request.getRemoteUser();
            String requestIp = getRequestIp(request);
