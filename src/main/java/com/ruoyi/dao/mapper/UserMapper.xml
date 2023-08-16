@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.dao.mapper.UserMapper">
+
+    <sql id="baseSql">
+        id as id,
+        username as userName,
+        password as  password,
+        icon as icon,
+        email as email,
+        nick_name as nickName,
+        note as note,
+        create_time as  createTime,
+        login_time as loginTime,
+        status as status
+    </sql>
+    <insert id="userAdd">
+        insert into ums_admin(
+            username,
+            password,
+            icon,
+            email,
+            nick_name,
+            note,
+            create_time,
+            login_time,
+            status
+        )values (
+             #{userName},
+             #{password},
+             #{icon},
+             #{email},
+             #{nickName},
+             #{note},
+             #{createTime},
+             #{loginTime},
+             #{status}
+        )
+    </insert>
+    <update id="updateUser">
+        update ums_admin set
+        <if test="password != null  and password != ''">
+            password = #{password},
+        </if>
+        <if test="icon != null  and icon != ''">
+            icon = #{icon},
+        </if>
+        <if test="email != null  and email != ''">
+            email = #{email},
+        </if>
+        <if test="nickName != null  and nickName != ''">
+            nick_name = #{nickName},
+        </if>
+        <if test="note != null  and note != ''">
+            note = #{note},
+        </if>
+            login_time = #{loginTime} where id = #{id}
+    </update>
+    <delete id="deleteUser">
+        delete from ums_admin where  id = #{id}
+    </delete>
+
+    <select id="userByName" resultType="com.ruoyi.dao.model.UserDto">
+        select
+            <include refid="baseSql"/>
+        from
+            ums_admin
+        where
+            username = #{name}
+    </select>
+
+
+</mapper>

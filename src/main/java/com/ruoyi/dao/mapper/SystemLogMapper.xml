@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.dao.mapper.SystemLogMapper">
+
+    <sql id="baseSql">
+        id as id,
+        DESCRIBE as describe,
+        LOGIN_ID as  loginId,
+        LOGIN_IP as loginIp,
+        LOGIN_TIME as loginTime,
+        PARAM as param,
+        SERVICE_NAME as serviceName,
+        requestUId as requestUId,
+        FUNC as  func
+    </sql>
+    <insert id="add">
+        insert into T_B_SYSTEM_LOG(
+            `DESCRIBE`,
+            LOGIN_ID,
+            LOGIN_IP,
+            LOGIN_TIME,
+            PARAM,
+            SERVICE_NAME,
+            requestUId,
+            FUNC
+        )values (
+            #{describe},
+            #{loginId},
+            #{loginIp},
+            now(),
+            #{param},
+            #{serviceName},
+            #{requestUId},
+            #{func}
+        )
+    </insert>
+
+
+    <update id="updateUser">
+        update ums_admin set
+        <if test="password != null  and password != ''">
+            password = #{password},
+        </if>
+        <if test="icon != null  and icon != ''">
+            icon = #{icon},
+        </if>
+        <if test="email != null  and email != ''">
+            email = #{email},
+        </if>
+        <if test="nickName != null  and nickName != ''">
+            nick_name = #{nickName},
+        </if>
+        <if test="note != null  and note != ''">
+            note = #{note},
+        </if>
+            login_time = #{loginTime} where id = #{id}
+    </update>
+    <delete id="deleteUser">
+        delete from ums_admin where  id = #{id}
+    </delete>
+
+    <select id="userByName" resultType="com.ruoyi.dao.model.UserDto">
+        select
+            <include refid="baseSql"/>
+        from
+            ums_admin
+        where
+            username = #{name}
+    </select>
+
+
+</mapper>

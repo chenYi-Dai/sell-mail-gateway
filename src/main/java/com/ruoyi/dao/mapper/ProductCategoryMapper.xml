@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.dao.mapper.ProductCategoryMapper">
+
+    <sql id="baseSql">
+        id as id,
+        parent_id as parentId,
+        name as name,
+        level as level,
+        product_count as productCount,
+        product_unit as productUnit,
+        nav_status as navStatus,
+        show_status as showStatus,
+        sort as sort,
+        icon as icon,
+        keywords as keywords,
+        description as description
+    </sql>
+
+
+    <resultMap id="BaseResultMap" type="com.ruoyi.dao.model.ProductCategoryDto">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="level" jdbcType="INTEGER" property="level" />
+        <result column="product_count" jdbcType="INTEGER" property="productCount" />
+        <result column="product_unit" jdbcType="VARCHAR" property="productUnit" />
+        <result column="nav_status" jdbcType="INTEGER" property="navStatus" />
+        <result column="show_status" jdbcType="INTEGER" property="showStatus" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="icon" jdbcType="VARCHAR" property="icon" />
+        <result column="keywords" jdbcType="VARCHAR" property="keywords" />
+        <collection property="children" resultMap="BaseResultMap" columnPrefix="child_"></collection>
+    </resultMap>
+
+    <resultMap id="childResultMap" type="com.ruoyi.dao.model.ProductCategoryDto" extends="BaseResultMap">
+        <collection property="children" resultMap="com.ruoyi.dao.mapper.ProductCategoryMapper.BaseResultMap" columnPrefix="child_"/>
+    </resultMap>
+
+    <select id="productCategoryList" resultMap="BaseResultMap">
+        select
+            c1.id,
+            c1.name,
+            c1.parent_id,
+            c2.id   child_id,
+            c2.name child_name,
+            c2.parent_id child_parent_id
+        from
+            pms_product_category c1 left join pms_product_category c2 on c1.id = c2.parent_id
+        <where>
+            1 = 1
+        <if test="param.condition.id != null">
+            and c1.parent_id = #{param.condition.id}
+        </if>
+        <if test="param.start != null and param.start > 0">
+            limit #{param.start},#{param.size}
+        </if>
+        </where>
+    </select>
+    <select id="productCategoryCount" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            pms_product_category c1 left join pms_product_category c2 on c1.id = c2.parent_id
+        <where>
+            1 = 1
+            <if test="param.condition.id != null">
+                and c1.parent_id = #{param.condition.id}
+            </if>
+        </where>
+    </select>
+
+    <select id="detail" resultType="com.ruoyi.dao.model.ProductCategoryDto">
+        select
+            <include refid="baseSql"/>
+        from
+            pms_product_category
+        where
+            id = #{id}
+    </select>
+
+    <update id="update">
+        update
+            pms_product_category
+        set
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+            <if test="productCount != null">
+                product_count = #{productCount},
+            </if>
+            <if test="productUnit != null and productUnit != ''">
+                product_unit = #{productUnit},
+            </if>
+            <if test="navStatus != null">
+                nav_status = #{navStatus},
+            </if>
+            <if test="showStatus != null">
+                show_status = #{showStatus},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="keywords != null and keywords != ''">
+                keywords = #{keywords},
+            </if>
+            <if test="icon != null and icon != ''">
+                icon = #{icon},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId}
+            </if>
+        where
+            id = #{id}
+    </update>
+
+    <insert id="add" useGeneratedKeys="true">
+        insert into pms_product_category(
+            parent_id,
+            name,
+            level,
+            product_count,
+            product_unit,
+            nav_status,
+            show_status,
+            sort,
+            icon,
+            keywords,
+            description
+        )values (
+            #{parentId},
+            #{name},
+            #{level},
+            #{productCount},
+            #{productUnit},
+            #{navStatus},
+            #{showStatus},
+            #{sort},
+            #{icon},
+            #{keywords},
+            #{description}
+        )
+    </insert>
+
+    <insert id="addCategoryIcon" useGeneratedKeys="true" >
+        insert into pms_product_category (icon) values (#{icon})
+    </insert>
+</mapper>
