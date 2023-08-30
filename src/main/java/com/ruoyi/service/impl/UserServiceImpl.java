@@ -34,4 +34,9 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UserDto userDto) {
         userDao.updateUser(userDto);
     }
+
+    @Override
+    public void queryList() {
+        userDao.queryList();
+    }
 }

@@ -79,6 +79,14 @@
             id = #{id}
     </select>
 
+    <select id="queryList" resultMap="BaseResultMap">
+        select
+            <include refid="baseSql"/>
+        from
+        pms_product_category
+
+    </select>
+
     <update id="update">
         update
             pms_product_category

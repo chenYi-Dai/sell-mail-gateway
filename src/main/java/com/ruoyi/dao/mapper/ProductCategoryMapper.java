@@ -6,11 +6,12 @@ import com.ruoyi.form.ProductCategoryListParam;
 import com.ruoyi.form.ProductCategoryParam;
 import com.ruoyi.form.UpdateProductCategoryParam;
 import org.apache.ibatis.annotations.Param;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.List;
 
 
-public interface ProductCategoryMapper {
+public interface ProductCategoryMapper extends BaseMapper<T>{
 
     /**
      * 分页获取所有品类

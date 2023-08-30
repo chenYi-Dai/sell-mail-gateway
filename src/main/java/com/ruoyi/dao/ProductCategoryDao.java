@@ -6,11 +6,14 @@ import com.ruoyi.form.PageParam;
 import com.ruoyi.form.ProductCategoryListParam;
 import com.ruoyi.form.ProductCategoryParam;
 import com.ruoyi.form.UpdateProductCategoryParam;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+@Slf4j
 @Repository
 public class ProductCategoryDao {
 
@@ -38,5 +41,10 @@ public class ProductCategoryDao {
     }
     public void addIcon(ProductCategoryDto dto){
         categoryMapper.addCategoryIcon(dto);
+    }
+
+    public void queryList(){
+        List<T> ts = categoryMapper.queryList();
+        log.info("category List result | {}",ts);
     }
 }
